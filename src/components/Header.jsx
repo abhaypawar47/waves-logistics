@@ -33,7 +33,11 @@ const Header = () => {
         {/* Logo */}
         <div className="flex items-center gap-2">
           <div className="text-2xl md:text-3xl font-extrabold tracking-tight">
-            <span className="text-primary">WAVES</span>
+            <span
+              className={`${scrolled ? "text-primary" : "text-white"} transition-colors`}
+            >
+              WAVES
+            </span>
             <span
               className={`${scrolled ? "text-primary" : "text-white"} transition-colors`}
             >

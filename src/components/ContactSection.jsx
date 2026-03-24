@@ -146,12 +146,12 @@ const ContactSection = () => {
             </p>
             <div className="flex gap-5 flex-wrap mb-6">
               <div>
-                <i className="fas fa-phone-alt text-accent mr-2"></i> +1 (888)
-                937-8374
+                <i className="fas fa-phone-alt text-accent mr-2"></i>
+                +91 7038831135
               </div>
               <div>
                 <i className="fas fa-envelope text-accent mr-2"></i>{" "}
-                hello@waveslogistics.com
+                waveslogi@gmail.com
               </div>
             </div>
             <div className="flex gap-4">

@@ -8,8 +8,8 @@ const Footer = () => {
               WAVES LOGISTICS
             </div>
             <p className="mt-3 text-sm">
-              Powering global trade with smart, reliable, and sustainable
-              logistics solutions.
+              Office No. 910, A Wing Grohitam Society Near APMC Market, Sector
+              19 Vashi, Navi Mumbai 400703 India
             </p>
           </div>
           <div>
@@ -65,7 +65,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="border-t border-gray-700 pt-6 text-center text-sm text-gray-400">
-          © 2025 Waves Logistics — Empowering global supply chains. All
+          © 2026 Waves Logistics — Empowering global supply chains. All
           trademarks reserved.
         </div>
       </div>

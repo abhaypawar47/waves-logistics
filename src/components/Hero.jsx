@@ -44,7 +44,7 @@ const Hero = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-8 border-t border-white/20 max-w-3xl">
             <div>
               <p className="text-white/70 text-xs">TRUSTED SINCE</p>
-              <p className="text-white text-xl font-bold">2025</p>
+              <p className="text-white text-xl font-bold">2020</p>
             </div>
             <div>
               <p className="text-white/70 text-xs">GLOBAL PARTNERS</p>
