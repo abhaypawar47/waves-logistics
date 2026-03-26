@@ -1,3 +1,6 @@
+import { useEffect, useRef } from "react";
+import "./Insights.css";
+
 const Insights = () => {
   const articles = [
     {
@@ -20,15 +23,38 @@ const Insights = () => {
     },
   ];
 
+  const cardsRef = useRef([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate-in");
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
+    );
+
+    cardsRef.current.forEach((card) => {
+      if (card) observer.observe(card);
+    });
+
+    return () => {
+      cardsRef.current.forEach((card) => {
+        if (card) observer.unobserve(card);
+      });
+    };
+  }, []);
+
   return (
-    <section
-      id="insights"
-      className="relative py-20 bg-gray-50 overflow-hidden"
-    >
-      {/* Background image overlay */}
-      <div className="absolute inset-0 z-0 opacity-70">
+    <section id="insights" className="insights-section">
+      {/* Background */}
+      <div className="insights-background">
+        <div className="insights-overlay"></div>
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="insights-image"
           style={{
             backgroundImage:
               "url('https://images.unsplash.com/photo-1618044733300-9472054094ee?q=80&w=871&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
@@ -36,51 +62,57 @@ const Insights = () => {
         ></div>
       </div>
 
-      <div className="relative z-10 container-custom">
-        <div className="flex flex-wrap justify-between items-end mb-12">
-          <div>
-            <span className="text-primary font-semibold text-sm">
-              WAVES INSIGHTS
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mt-2">
-              Latest logistics news & stories
+      {/* Decorative elements */}
+      <div className="insights-blur-circle"></div>
+      <div className="insights-blur-circle-2"></div>
+
+      <div className="insights-container">
+        {/* Header */}
+        <div className="insights-header">
+          <div className="insights-header-left">
+            <div className="insights-badge">
+              <i className="fas fa-newspaper"></i> WAVES INSIGHTS
+            </div>
+            <h2 className="insights-title">
+              Latest logistics <br />
+              <span className="insights-title-accent">news & stories</span>
             </h2>
           </div>
-          <button className="text-primary font-semibold border-b-2 border-primary pb-1 mt-4 hover:text-accent transition">
-            View all articles →
+          <button className="insights-view-all">
+            View all articles
+            <i className="fas fa-arrow-right"></i>
           </button>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        {/* Articles Grid */}
+        <div className="insights-grid">
           {articles.map((item, idx) => (
             <div
               key={idx}
-              className="bg-white/90 backdrop-blur-sm rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group border border-white/20"
+              ref={(el) => (cardsRef.current[idx] = el)}
+              className="insights-card"
+              style={{ animationDelay: `${idx * 0.1}s` }}
             >
-              <div className="h-56 overflow-hidden">
-                <img
-                  src={item.img}
-                  className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
-                  alt={item.title}
-                />
-              </div>
-              <div className="p-6">
-                <div className="flex gap-2 text-xs text-primary font-semibold mb-2 flex-wrap">
-                  <span className="bg-blue-50/80 backdrop-blur-sm px-2 py-1 rounded-full">
-                    {item.category}
-                  </span>
-                  <span className="text-gray-600">{item.date}</span>
+              <div className="insights-card-inner">
+                <div className="insights-card-image">
+                  <img src={item.img} alt={item.title} />
+                  <div className="insights-card-overlay"></div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-3">
-                  {item.title}
-                </h3>
-                <a
-                  href="#"
-                  className="inline-flex items-center text-primary font-medium group-hover:gap-2 transition-all"
-                >
-                  Read more{" "}
-                  <i className="fas fa-chevron-right ml-1 text-xs"></i>
-                </a>
+                <div className="insights-card-content">
+                  <div className="insights-card-meta">
+                    <span className="insights-category">
+                      <i className="fas fa-tag"></i> {item.category}
+                    </span>
+                    <span className="insights-date">
+                      <i className="fas fa-calendar-alt"></i> {item.date}
+                    </span>
+                  </div>
+                  <h3 className="insights-card-title">{item.title}</h3>
+                  <a href="#" className="insights-read-more">
+                    Read more
+                    <i className="fas fa-chevron-right"></i>
+                  </a>
+                </div>
               </div>
             </div>
           ))}

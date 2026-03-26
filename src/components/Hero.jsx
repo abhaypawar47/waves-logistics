@@ -1,64 +1,106 @@
+import React, { useEffect, useRef } from "react";
+import "./Hero.css";
+
 const Hero = () => {
+  const statsRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate-in");
+          }
+        });
+      },
+      { threshold: 0.2, rootMargin: "0px 0px -100px 0px" },
+    );
+
+    const currentStatsRef = statsRef.current;
+    if (currentStatsRef) {
+      observer.observe(currentStatsRef);
+    }
+
+    return () => {
+      if (currentStatsRef) {
+        observer.unobserve(currentStatsRef);
+      }
+    };
+  }, []);
+
   return (
-    <section
-      id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
-    >
-      {/* Background */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#021e2f]/90 via-[#043753]/80 to-primary/20 z-5"></div>
+    <section className="hero-section" id="home">
+      {/* Background with parallax */}
+      <div className="hero-background">
+        <div className="hero-overlay" />
         <div
-          className="absolute inset-0 bg-cover bg-center z-0"
+          className="hero-image"
           style={{
             backgroundImage:
               "url('https://images.unsplash.com/photo-1571244222371-0b0b60f3c92b?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
           }}
-        ></div>
+        />
       </div>
 
       {/* Content */}
-      <div className="relative z-20 container-custom text-center md:text-left">
-        <div className="max-w-4xl mx-auto md:mx-0 animate-slide-up">
-          <div className="inline-block bg-white/10 backdrop-blur-sm rounded-full px-4 py-1.5 mb-6 text-white text-sm font-medium border border-white/20">
-            <i className="fas fa-globe-americas mr-2"></i> Global logistics
-            partner
-          </div>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-white tracking-tight">
-            Seamless supply chains, <br />
-            <span className="text-accent">ocean-driven precision</span>
-          </h1>
-          <p className="text-lg md:text-xl text-white/80 mt-6 max-w-2xl">
-            Waves Logistics delivers end-to-end freight forwarding, warehousing,
-            and smart logistics solutions across 6 continents.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 mt-10 justify-center md:justify-start">
-            <button className="bg-accent hover:bg-accent-dark text-gray-900 font-bold px-8 py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
-              Start Shipping <i className="fas fa-arrow-right ml-2"></i>
-            </button>
-            <button className="border-2 border-white text-white hover:bg-white/10 font-semibold px-8 py-3 rounded-full transition-all duration-300">
-              Explore Services
-            </button>
-          </div>
+      <div className="hero-content">
+        <div className="hero-container">
+          <div className="hero-inner">
+            {/* Badge */}
+            <div className="hero-badge">
+              <i className="fas fa-globe-americas" /> Global logistics partner
+            </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-8 border-t border-white/20 max-w-3xl">
-            <div>
-              <p className="text-white/70 text-xs">TRUSTED SINCE</p>
-              <p className="text-white text-xl font-bold">2020</p>
+            {/* Heading */}
+            <h1 className="hero-title">
+              Seamless supply chains,{" "}
+              <span className="hero-title-accent">ocean-driven precision</span>
+            </h1>
+
+            {/* Description */}
+            <p className="hero-description">
+              Waves Logistics delivers end-to-end freight forwarding,
+              warehousing, and smart logistics solutions across 6 continents.
+            </p>
+
+            {/* Buttons */}
+            <div className="hero-buttons">
+              <button className="hero-btn-primary" type="button">
+                Start Shipping <i className="fas fa-arrow-right" />
+              </button>
+              <button className="hero-btn-secondary" type="button">
+                Explore Services
+              </button>
             </div>
-            <div>
-              <p className="text-white/70 text-xs">GLOBAL PARTNERS</p>
-              <p className="text-white text-xl font-bold">200+</p>
-            </div>
-            <div>
-              <p className="text-white/70 text-xs">SHIPMENTS/MONTH</p>
-              <p className="text-white text-xl font-bold">12K+</p>
-            </div>
-            <div>
-              <p className="text-white/70 text-xs">COUNTRIES</p>
-              <p className="text-white text-xl font-bold">85+</p>
+
+            {/* Stats */}
+            <div className="hero-stats" ref={statsRef}>
+              <div className="hero-stat-item">
+                <p className="hero-stat-label">TRUSTED SINCE</p>
+                <p className="hero-stat-value">2020</p>
+              </div>
+              <div className="hero-stat-item">
+                <p className="hero-stat-label">GLOBAL PARTNERS</p>
+                <p className="hero-stat-value">200+</p>
+              </div>
+              <div className="hero-stat-item">
+                <p className="hero-stat-label">SHIPMENTS/MONTH</p>
+                <p className="hero-stat-value">12K+</p>
+              </div>
+              <div className="hero-stat-item">
+                <p className="hero-stat-label">COUNTRIES</p>
+                <p className="hero-stat-value">85+</p>
+              </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="hero-scroll-indicator">
+        <div className="hero-scroll-mouse" />
+        <div className="hero-scroll-arrow">
+          <i className="fas fa-chevron-down" />
         </div>
       </div>
     </section>

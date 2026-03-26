@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "./Header.css";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,6 +13,17 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMenuOpen]);
+
   const navLinks = [
     "Home",
     "Services",
@@ -22,87 +34,114 @@ const Header = () => {
   ];
 
   return (
-    <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-white/95 backdrop-blur-md shadow-lg py-3"
-          : "bg-transparent py-5"
-      }`}
-    >
-      <div className="container-custom flex justify-between items-center">
-        {/* Logo */}
-        <div className="flex items-center gap-2">
-          <div className="text-2xl md:text-3xl font-extrabold tracking-tight">
-            <span
-              className={`${scrolled ? "text-primary" : "text-white"} transition-colors`}
-            >
-              WAVES
-            </span>
-            <span
-              className={`${scrolled ? "text-primary" : "text-white"} transition-colors`}
-            >
-              {" "}
-              LOGISTICS
-            </span>
+    <>
+      <header className={`header ${scrolled ? "header-scrolled" : ""}`}>
+        <div className="header-container">
+          {/* Logo */}
+          <div className="logo-container">
+            <div className="logo-wrapper">
+              <span className="logo-primary">WAVES</span>
+              <span className="logo-secondary"> LOGISTICS</span>
+            </div>
+            <div className="logo-divider" />
+            <div className="logo-tagline">global reach • precise delivery</div>
           </div>
-          <div className="hidden md:block w-px h-8 bg-primary/30 rounded-full ml-2"></div>
-          <div
-            className={`hidden md:block text-xs font-medium ${scrolled ? "text-gray-600" : "text-white/90"}`}
+
+          {/* Desktop Navigation */}
+          <nav className="desktop-nav">
+            {navLinks.map((link, index) => (
+              <a
+                key={link}
+                href={`#${link.toLowerCase()}`}
+                className="nav-link"
+                style={{ animationDelay: `${index * 0.05}s` }}
+              >
+                {link}
+              </a>
+            ))}
+            <button className="nav-cta-button">
+              Get a Quote
+              <svg className="cta-icon" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M5 12H19M19 12L13 6M19 12L13 18"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          </nav>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="mobile-menu-button"
+            aria-label="Toggle menu"
           >
-            global reach • precise delivery
+            <div className={`hamburger ${isMenuOpen ? "active" : ""}`}>
+              <span className="hamburger-line"></span>
+              <span className="hamburger-line"></span>
+              <span className="hamburger-line"></span>
+            </div>
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile Menu Overlay */}
+      <div
+        className={`mobile-overlay ${isMenuOpen ? "active" : ""}`}
+        onClick={() => setIsMenuOpen(false)}
+      >
+        <div
+          className={`mobile-menu ${isMenuOpen ? "active" : ""}`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="mobile-menu-header">
+            <div className="mobile-logo">
+              <span className="logo-primary">WAVES</span>
+              <span className="logo-secondary"> LOGISTICS</span>
+            </div>
+          </div>
+          <div className="mobile-nav-links">
+            {navLinks.map((link, index) => (
+              <a
+                key={link}
+                href={`#${link.toLowerCase()}`}
+                className="mobile-nav-link"
+                onClick={() => setIsMenuOpen(false)}
+                style={{ animationDelay: `${index * 0.05}s` }}
+              >
+                <span className="nav-link-text">{link}</span>
+                <svg className="nav-link-arrow" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M5 12H19M19 12L13 6M19 12L13 18"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </a>
+            ))}
+          </div>
+          <div className="mobile-menu-footer">
+            <button className="mobile-cta-button">
+              Get a Quote
+              <svg className="cta-icon" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M5 12H19M19 12L13 6M19 12L13 18"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
           </div>
         </div>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center space-x-8">
-          {navLinks.map((link) => (
-            <a
-              key={link}
-              href={`#${link.toLowerCase()}`}
-              className={`text-sm font-semibold tracking-wide transition ${
-                scrolled
-                  ? "text-gray-700 hover:text-primary"
-                  : "text-white hover:text-accent"
-              }`}
-            >
-              {link}
-            </a>
-          ))}
-          <button className="bg-primary hover:bg-primary-dark text-white font-semibold px-5 py-2 rounded-full transition-all duration-300 shadow-md">
-            Get a Quote
-          </button>
-        </nav>
-
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="lg:hidden text-2xl focus:outline-none"
-        >
-          <i
-            className={`fas ${isMenuOpen ? "fa-times" : "fa-bars"} ${scrolled ? "text-primary" : "text-white"}`}
-          ></i>
-        </button>
       </div>
-
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="lg:hidden absolute top-full left-0 w-full bg-white shadow-2xl py-6 px-6 flex flex-col gap-4 border-t border-gray-100 animate-fade-in">
-          {navLinks.map((link) => (
-            <a
-              key={link}
-              href={`#${link.toLowerCase()}`}
-              className="text-gray-800 font-semibold py-2 hover:text-primary transition"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {link}
-            </a>
-          ))}
-          <button className="bg-primary text-white font-semibold py-3 rounded-full transition text-center">
-            Get a Quote →
-          </button>
-        </div>
-      )}
-    </header>
+    </>
   );
 };
 

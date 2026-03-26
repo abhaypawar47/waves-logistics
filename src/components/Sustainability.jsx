@@ -1,13 +1,38 @@
+import { useEffect, useRef } from "react";
+import "./Sustainability.css";
+
 const Sustainability = () => {
+  const leftRef = useRef(null);
+  const rightRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate-in");
+          }
+        });
+      },
+      { threshold: 0.2, rootMargin: "0px 0px -50px 0px" },
+    );
+
+    if (leftRef.current) observer.observe(leftRef.current);
+    if (rightRef.current) observer.observe(rightRef.current);
+
+    return () => {
+      if (leftRef.current) observer.unobserve(leftRef.current);
+      if (rightRef.current) observer.unobserve(rightRef.current);
+    };
+  }, []);
+
   return (
-    <section
-      id="sustainability"
-      className="relative py-20 bg-white overflow-hidden"
-    >
-      {/* Background image overlay */}
-      <div className="absolute inset-0 z-0 opacity-100">
+    <section id="sustainability" className="sustainability-section">
+      {/* Background with overlay */}
+      <div className="sustainability-background">
+        <div className="sustainability-overlay"></div>
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="sustainability-image"
           style={{
             backgroundImage:
               "url('https://images.unsplash.com/photo-1761489179730-5a11d5d7449a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
@@ -16,45 +41,63 @@ const Sustainability = () => {
       </div>
 
       {/* Decorative blur circles */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#e6f3ff] rounded-full blur-3xl opacity-40 z-0"></div>
+      <div className="sustainability-blur-circle"></div>
+      <div className="sustainability-blur-circle-2"></div>
 
-      <div className="container-custom relative z-10">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="order-2 md:order-1">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-white/20">
+      <div className="sustainability-container">
+        <div className="sustainability-grid">
+          {/* Left side - Image */}
+          <div className="sustainability-image-wrapper" ref={leftRef}>
+            <div className="sustainability-image-card">
               <img
                 src="https://images.unsplash.com/photo-1629096346363-b96e4d9634a1?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="green logistics"
-                className="rounded-xl shadow-2xl object-cover w-full h-80 md:h-96"
+                className="sustainability-image-main"
               />
+              <div className="sustainability-image-badge">
+                <i className="fas fa-seedling"></i> Carbon Neutral Initiative
+              </div>
             </div>
           </div>
 
-          <div className="order-1 md:order-2">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-lg border border-white/20">
-              <i className="fas fa-leaf text-4xl text-green-700 mb-4"></i>
-              <h2 className="text-4xl font-bold text-gray-900 mb-5">
-                Sustainability at our core
+          {/* Right side - Content */}
+          <div className="sustainability-content-wrapper" ref={rightRef}>
+            <div className="sustainability-card">
+              <div className="sustainability-icon">
+                <i className="fas fa-leaf"></i>
+              </div>
+
+              <h2 className="sustainability-title">
+                Sustainability at
+                <br />
+                <span className="sustainability-title-accent">our core</span>
               </h2>
-              <p className="text-gray-700 text-lg mb-6">
+
+              <p className="sustainability-description">
                 We are committed to carbon-neutral shipping, alternative fuels,
                 and optimizing routes to reduce environmental footprint. Partner
                 with a greener supply chain.
               </p>
-              <div className="flex gap-5 mb-8">
-                <div>
-                  <span className="text-3xl font-black text-primary">-32%</span>
-                  <p className="text-gray-600 text-sm">
+
+              <div className="sustainability-stats">
+                <div className="sustainability-stat">
+                  <div className="sustainability-stat-value">-32%</div>
+                  <div className="sustainability-stat-label">
                     CO₂ intensity since 2023
-                  </p>
+                  </div>
                 </div>
-                <div>
-                  <span className="text-3xl font-black text-primary">15+</span>
-                  <p className="text-gray-600 text-sm">Eco-hubs worldwide</p>
+                <div className="sustainability-stat-divider"></div>
+                <div className="sustainability-stat">
+                  <div className="sustainability-stat-value">15+</div>
+                  <div className="sustainability-stat-label">
+                    Eco-hubs worldwide
+                  </div>
                 </div>
               </div>
-              <button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-3 rounded-full transition-all duration-300 shadow-md hover:shadow-lg">
-                Explore ESG Report →
+
+              <button className="sustainability-button">
+                Explore ESG Report
+                <i className="fas fa-arrow-right"></i>
               </button>
             </div>
           </div>
